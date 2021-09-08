@@ -1,3 +1,5 @@
+import sys
+
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -47,10 +49,10 @@ class Learner_KD(nn.Module):
         return self.model_s.forward(x)
 
     def forward_with_criterion(self, inputs, targets):
-        out_teacher = self.forward_t(inputs)
+        out_teacher = self.forward_t(inputs).detach()
         out_student = self.forward_s(inputs)
         loss_hard = self.criterion_s(out_student, targets)
-        loss_soft = self.criterion_t2s(F.softmax(out_teacher, dim=1), F.softmax(out_student, dim=1))
+        loss_soft = self.criterion_t2s(F.log_softmax(out_student), F.softmax(out_teacher))
         loss = (1 - self.beta) * loss_hard + self.beta * loss_soft
         return loss, out_student
 

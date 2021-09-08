@@ -1,4 +1,5 @@
 import os
+import csv
 import torch
 import torch.nn as nn
 from torch.nn import CrossEntropyLoss
@@ -33,8 +34,8 @@ if __name__ == "__main__":
     # teacher model training
 
     if not teacher_pretrained:
-        max_epoch_t = 100
-        schedule_t = [20, 40]
+        max_epoch_t = 40
+        schedule_t = [15]
         optimizer_t = torch.optim.Adam(model_teacher.parameters(), lr=0.001, weight_decay=0.0001)
         scheduler_t = MultiStepLR(optimizer_t, milestones=schedule_t, gamma=0.1)
         learner_t = Learner(model_teacher, criterion_t, optimizer_t, scheduler_t)
@@ -50,17 +51,17 @@ if __name__ == "__main__":
 
     # student model training
 
-    max_epoch_s = 100
-    schedule_s = [20, 40]
+    max_epoch_s = 40
+    schedule_s = [15]
     criterion_s = CrossEntropyLoss()
     criterion_t2s = nn.KLDivLoss()
     optimizer_s = torch.optim.Adam(model_student.parameters(), lr=0.001, weight_decay=0.0001)
     scheduler_s = MultiStepLR(optimizer_s, milestones=schedule_s, gamma=0.1)
-    learner_s = Learner_KD(model_teacher, model_student, criterion_t, criterion_t2s, optimizer_s, scheduler_s, 0)
+    learner_s = Learner_KD(model_teacher, model_student, criterion_s, criterion_t2s, optimizer_s, scheduler_s, 1)
 
     for epoch in range(max_epoch_s):
         train(epoch, train_loader, learner_s)
         evaluate(test_loader, model_student)
         learner_s.scheduler.step()
 
-    torch.save(model_student.state_dict(), "pretrained_models/model_teacher_resnet50_student_alexnet_beta_00.pth")
+    torch.save(model_student.state_dict(), "pretrained_models/model_teacher_resnet50_student_alexnet_beta_100per.pth")

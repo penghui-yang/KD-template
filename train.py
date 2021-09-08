@@ -8,7 +8,6 @@ def train(epoch, train_loader, learner):
     batch_time = AverageMeter()
     data_time = AverageMeter()
     losses = AverageMeter()
-    confusion = Confusion(train_loader.num_classes)
 
     print('\n\n==== Epoch:{0} ===='.format(epoch))
     learner.train()
@@ -28,7 +27,6 @@ def train(epoch, train_loader, learner):
 
         # Optimization
         loss, output = learner.learn(input, target)
-        confusion.add(output, target)
 
         # Measure elapsed time
         batch_time.update(batch_timer.toc())
@@ -44,6 +42,3 @@ def train(epoch, train_loader, learner):
                   '{loss.val:.3f} ({loss.avg:.3f})'.format(
                 i, len(train_loader), batch_time=batch_time,
                 data_time=data_time, loss=losses))
-
-    confusion.show()
-    print("Train Set Accuracy: %.4f" % confusion.acc())
