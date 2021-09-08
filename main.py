@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     criterion_t = CrossEntropyLoss()
 
-    teacher_pretrained = True
+    teacher_pretrained = False
 
     # teacher model training
 
