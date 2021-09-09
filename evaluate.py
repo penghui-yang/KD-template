@@ -20,6 +20,5 @@ def evaluate(eval_loader, model):
         confusion.add(output, target)
 
     confusion.show()
-    acc = confusion.acc()
-    print("Validation Set Accuracy: %.4f" % acc)
-    return acc
+    print("Validation Set Accuracy: %.4f" % confusion.acc())
+    return confusion.acc()

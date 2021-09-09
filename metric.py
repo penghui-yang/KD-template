@@ -46,10 +46,6 @@ class Timer(object):
 
 
 class Confusion(object):
-    """
-    column of confusion matrix: predicted index
-    row of confusion matrix: target index
-    """
 
     def __init__(self, k, normalized=False):
         super(Confusion, self).__init__()

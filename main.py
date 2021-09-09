@@ -1,5 +1,4 @@
 import os
-import csv
 import torch
 import torch.nn as nn
 from torch.nn import CrossEntropyLoss
@@ -63,5 +62,3 @@ if __name__ == "__main__":
         train(epoch, train_loader, learner_s)
         evaluate(test_loader, model_student)
         learner_s.scheduler.step()
-
-    torch.save(model_student.state_dict(), "pretrained_models/model_teacher_resnet50_student_alexnet_beta_100per.pth")

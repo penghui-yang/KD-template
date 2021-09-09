@@ -1,4 +1,4 @@
-from metric import Timer, AverageMeter, Confusion
+from metric import Timer, AverageMeter
 
 
 def train(epoch, train_loader, learner):
